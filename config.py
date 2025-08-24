@@ -1,0 +1,31 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Bot Configuration
+BOT_TOKEN = "8059528086:AAFIZLlNJzo_nUplHlXzjyShla-DsT0RNYw"
+ADMIN_ID = 5509130673
+
+# Bot Settings
+BOT_NAME = "PowerBot"
+BOT_VERSION = "2.0"
+BOT_DESCRIPTION = "قوي جدا - Powerful Telegram Bot"
+
+# Database Settings (if needed)
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///bot_database.db")
+
+# API Keys (add your own keys here)
+WEATHER_API_KEY = os.getenv("WEATHER_API_KEY", "")
+TRANSLATE_API_KEY = os.getenv("TRANSLATE_API_KEY", "")
+
+# Bot Features
+ENABLED_FEATURES = [
+    "admin_commands",
+    "user_commands", 
+    "file_handling",
+    "media_processing",
+    "web_scraping",
+    "utilities",
+    "entertainment"
+]
