@@ -16,12 +16,11 @@ import requests
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from telegram.ext import (
-    Application, CommandHandler, MessageHandler, CallbackQueryHandler,
-    ContextTypes, filters
+    Updater, CommandHandler, MessageHandler, CallbackQueryHandler,
+    CallbackContext, Filters
 )
-from telegram.constants import ParseMode
 
 # Configure logging
 logging.basicConfig(
@@ -73,7 +72,7 @@ class OriginalDesignBot:
             suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')
         return str(n) + suffix
         
-    async def start_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    def start_command(self, update: Update, context: CallbackContext):
         """Handle /start command - Original design"""
         user = update.effective_user
         
@@ -100,21 +99,21 @@ Check And Click Down For More</b>
             ]
         ])
         
-        await update.message.reply_text(
+        update.message.reply_text(
             caption,
             reply_markup=reply_markup,
             parse_mode=ParseMode.HTML,
             disable_web_page_preview=True
         )
         
-    async def myacc_callback(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+    def myacc_callback(self, update: Update, context: CallbackContext):
         """Handle myacc callback - Original design"""
         query = update.callback_query
         user = query.from_user
         
         # Check if user is registered
         if user.id not in self.users_data:
-            await query.answer("Register First Hit /register to register yourself", show_alert=True)
+            query.answer("Register First Hit /register to register yourself", show_alert=True)
             return
             
         user_data = self.users_data[user.id]
@@ -601,7 +600,14 @@ Check And Click Down For More</b>
         print(f"👑 Admin ID: {self.admin_id}")
         print("🚀 Bot is running...")
         
-        application.run_polling(allowed_updates=Update.ALL_TYPES)
+        # Use asyncio to run the bot
+        async def main():
+            await application.initialize()
+            await application.start()
+            await application.run_polling(allowed_updates=Update.ALL_TYPES)
+            await application.stop()
+        
+        asyncio.run(main())
 
 if __name__ == "__main__":
     bot = OriginalDesignBot()
