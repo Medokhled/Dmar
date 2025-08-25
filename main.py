@@ -389,6 +389,263 @@ class PowerBot:
         else:
             await update.message.reply_text(f"📝 رسالتك: {message}")
             
+    async def translate_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle /translate command"""
+        if not context.args:
+            await update.message.reply_text("🌐 الرجاء إدخال النص: /translate [النص]")
+            return
+            
+        text = " ".join(context.args)
+        
+        # Simple translation simulation
+        translations = {
+            "hello": "مرحبا",
+            "world": "العالم",
+            "bot": "بوت",
+            "powerful": "قوي",
+            "telegram": "تيليجرام",
+            "good": "جيد",
+            "bad": "سيء",
+            "yes": "نعم",
+            "no": "لا"
+        }
+        
+        if text.lower() in translations:
+            result = translations[text.lower()]
+        else:
+            result = f"ترجمة: {text} -> العربية"
+            
+        await update.message.reply_text(f"🌐 **الترجمة:**\n\n{text} → {result}", parse_mode=ParseMode.MARKDOWN)
+        
+    async def url_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle /url command"""
+        if not context.args:
+            await update.message.reply_text("🔗 الرجاء إدخال الرابط: /url [الرابط]")
+            return
+            
+        url = context.args[0]
+        
+        try:
+            # Basic URL analysis
+            import re
+            
+            # Check if URL is valid
+            url_pattern = re.compile(
+                r'^https?://'  # http:// or https://
+                r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,6}\.?|'  # domain...
+                r'localhost|'  # localhost...
+                r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
+                r'(?::\d+)?'  # optional port
+                r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+            
+            is_valid = bool(url_pattern.match(url))
+            
+            url_info = f"""
+🔗 **تحليل الرابط:**
+
+**الرابط:** {url}
+**صالح:** {'✅ نعم' if is_valid else '❌ لا'}
+**النوع:** {'HTTPS' if url.startswith('https') else 'HTTP'}
+**المجال:** {url.split('/')[2] if len(url.split('/')) > 2 else 'غير محدد'}
+            """
+            
+            await update.message.reply_text(url_info, parse_mode=ParseMode.MARKDOWN)
+            
+        except Exception as e:
+            await update.message.reply_text(f"❌ حدث خطأ: {str(e)}")
+            
+    async def password_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle /password command"""
+        length = 12  # Default length
+        
+        if context.args:
+            try:
+                length = int(context.args[0])
+                if length < 4:
+                    length = 4
+                elif length > 50:
+                    length = 50
+            except ValueError:
+                length = 12
+        
+        import random
+        import string
+        
+        # Generate password
+        chars = string.ascii_letters + string.digits + "!@#$%^&*()_+-=[]{}|;:,.<>?"
+        password = ''.join(random.choice(chars) for _ in range(length))
+        
+        await update.message.reply_text(f"🔐 **كلمة مرور قوية:**\n\n`{password}`", parse_mode=ParseMode.MARKDOWN)
+        
+    async def hash_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle /hash command"""
+        if len(context.args) < 2:
+            await update.message.reply_text("🔒 الرجاء إدخال النص والخوارزمية: /hash [النص] [md5/sha1/sha256/base64]")
+            return
+            
+        text = context.args[0]
+        algorithm = context.args[1].lower()
+        
+        try:
+            import hashlib
+            import base64
+            
+            if algorithm == "md5":
+                result = hashlib.md5(text.encode()).hexdigest()
+            elif algorithm == "sha1":
+                result = hashlib.sha1(text.encode()).hexdigest()
+            elif algorithm == "sha256":
+                result = hashlib.sha256(text.encode()).hexdigest()
+            elif algorithm == "base64":
+                result = base64.b64encode(text.encode()).decode()
+            else:
+                await update.message.reply_text("❌ خوارزمية غير مدعومة. استخدم: md5, sha1, sha256, base64")
+                return
+                
+            await update.message.reply_text(f"🔒 **التشفير ({algorithm.upper()}):**\n\n`{result}`", parse_mode=ParseMode.MARKDOWN)
+            
+        except Exception as e:
+            await update.message.reply_text(f"❌ حدث خطأ: {str(e)}")
+            
+    async def analyze_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle /analyze command"""
+        if not context.args:
+            await update.message.reply_text("📊 الرجاء إدخال النص: /analyze [النص]")
+            return
+            
+        text = " ".join(context.args)
+        
+        try:
+            # Analyze text
+            char_count = len(text)
+            word_count = len(text.split())
+            line_count = len(text.splitlines())
+            
+            # Count Arabic and English characters
+            import re
+            arabic_chars = len(re.findall(r'[\u0600-\u06FF]', text))
+            english_chars = len(re.findall(r'[a-zA-Z]', text))
+            numbers = len(re.findall(r'\d', text))
+            
+            analysis = f"""
+📊 **تحليل النص:**
+
+**الأحرف:** {char_count}
+**الكلمات:** {word_count}
+**الأسطر:** {line_count}
+**الأحرف العربية:** {arabic_chars}
+**الأحرف الإنجليزية:** {english_chars}
+**الأرقام:** {numbers}
+            """
+            
+            await update.message.reply_text(analysis, parse_mode=ParseMode.MARKDOWN)
+            
+        except Exception as e:
+            await update.message.reply_text(f"❌ حدث خطأ: {str(e)}")
+            
+    async def random_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle /random command"""
+        max_num = 100  # Default max
+        
+        if context.args:
+            try:
+                max_num = int(context.args[0])
+                if max_num < 1:
+                    max_num = 1
+                elif max_num > 1000000:
+                    max_num = 1000000
+            except ValueError:
+                max_num = 100
+        
+        import random
+        result = random.randint(1, max_num)
+        
+        await update.message.reply_text(f"🎲 **رقم عشوائي:** {result} (من 1 إلى {max_num})")
+        
+    async def flip_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle /flip command"""
+        import random
+        
+        result = random.choice(["صورة", "كتابة"])
+        emoji = "🪙" if result == "صورة" else "📝"
+        
+        await update.message.reply_text(f"{emoji} **نتيجة رمي العملة:** {result}")
+        
+    async def save_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle /save command"""
+        user_id = update.effective_user.id
+        
+        # Initialize user saves if not exists
+        if 'user_saves' not in context.bot_data:
+            context.bot_data['user_saves'] = {}
+        if user_id not in context.bot_data['user_saves']:
+            context.bot_data['user_saves'][user_id] = []
+        
+        # Get the replied message or current message
+        if update.message.reply_to_message:
+            message_to_save = update.message.reply_to_message.text
+        else:
+            message_to_save = " ".join(context.args) if context.args else "لا يوجد نص للحفظ"
+        
+        # Save the message
+        save_id = len(context.bot_data['user_saves'][user_id]) + 1
+        context.bot_data['user_saves'][user_id].append({
+            'id': save_id,
+            'text': message_to_save,
+            'date': datetime.now().isoformat()
+        })
+        
+        await update.message.reply_text(f"💾 **تم الحفظ بنجاح!**\n\nالرقم: {save_id}\nالنص: {message_to_save[:50]}{'...' if len(message_to_save) > 50 else ''}")
+        
+    async def list_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle /list command"""
+        user_id = update.effective_user.id
+        
+        if 'user_saves' not in context.bot_data or user_id not in context.bot_data['user_saves']:
+            await update.message.reply_text("📋 لا توجد محفوظات لك")
+            return
+        
+        saves = context.bot_data['user_saves'][user_id]
+        
+        if not saves:
+            await update.message.reply_text("📋 لا توجد محفوظات لك")
+            return
+        
+        list_text = "📋 **محفوظاتك:**\n\n"
+        for save in saves:
+            list_text += f"**{save['id']}.** {save['text'][:30]}{'...' if len(save['text']) > 30 else ''}\n"
+        
+        await update.message.reply_text(list_text, parse_mode=ParseMode.MARKDOWN)
+        
+    async def delete_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Handle /delete command"""
+        user_id = update.effective_user.id
+        
+        if not context.args:
+            await update.message.reply_text("🗑️ الرجاء تحديد رقم المحفوظ: /delete [الرقم]")
+            return
+        
+        try:
+            save_id = int(context.args[0])
+        except ValueError:
+            await update.message.reply_text("❌ الرجاء إدخال رقم صحيح")
+            return
+        
+        if 'user_saves' not in context.bot_data or user_id not in context.bot_data['user_saves']:
+            await update.message.reply_text("📋 لا توجد محفوظات لك")
+            return
+        
+        saves = context.bot_data['user_saves'][user_id]
+        
+        # Find and remove the save
+        for i, save in enumerate(saves):
+            if save['id'] == save_id:
+                deleted_text = saves.pop(i)['text']
+                await update.message.reply_text(f"🗑️ **تم الحذف بنجاح!**\n\nالرقم: {save_id}\nالنص المحذوف: {deleted_text[:50]}{'...' if len(deleted_text) > 50 else ''}")
+                return
+        
+        await update.message.reply_text(f"❌ لم يتم العثور على محفوظ برقم {save_id}")
+        
     async def error_handler(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Handle errors"""
         logger.error(f"Exception while handling an update: {context.error}")
@@ -410,6 +667,16 @@ class PowerBot:
         application.add_handler(CommandHandler("quote", self.quote_command))
         application.add_handler(CommandHandler("broadcast", self.broadcast_command))
         application.add_handler(CommandHandler("stats", self.stats_command))
+        application.add_handler(CommandHandler("translate", self.translate_command))
+        application.add_handler(CommandHandler("url", self.url_command))
+        application.add_handler(CommandHandler("password", self.password_command))
+        application.add_handler(CommandHandler("hash", self.hash_command))
+        application.add_handler(CommandHandler("analyze", self.analyze_command))
+        application.add_handler(CommandHandler("random", self.random_command))
+        application.add_handler(CommandHandler("flip", self.flip_command))
+        application.add_handler(CommandHandler("save", self.save_command))
+        application.add_handler(CommandHandler("list", self.list_command))
+        application.add_handler(CommandHandler("delete", self.delete_command))
         
         # Add callback query handler
         application.add_handler(CallbackQueryHandler(self.button_callback))
