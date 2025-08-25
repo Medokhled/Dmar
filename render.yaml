@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: original-telegram-bot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python3 original_bot.py
+    envVars:
+      - key: BOT_TOKEN
+        value: 8059528086:AAFIZLlNJzo_nUplHlXzjyShla-DsT0RNYw
+      - key: API_ID
+        value: 29784596
+      - key: API_HASH
+        value: 4f330d47c4fa2a9732caa0036942c5a9
+      - key: BOT_USERNAME
+        value: Facemedobookbot
+      - key: ADMIN_ID
+        value: 5509130673

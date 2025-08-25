@@ -1,0 +1,32 @@
+app = "original-telegram-bot"
+primary_region = "iad"
+
+[build]
+
+[env]
+  BOT_TOKEN = "8059528086:AAFIZLlNJzo_nUplHlXzjyShla-DsT0RNYw"
+  API_ID = "29784596"
+  API_HASH = "4f330d47c4fa2a9732caa0036942c5a9"
+  BOT_USERNAME = "Facemedobookbot"
+  ADMIN_ID = "5509130673"
+
+[processes]
+  app = "python3 original_bot.py"
+
+[[services]]
+  internal_port = 8080
+  processes = ["app"]
+  protocol = "tcp"
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443

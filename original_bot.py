@@ -21,7 +21,17 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 logging.basicConfig(level=logging.INFO)
 
 # Import config
-from original_config import BOT_TOKEN, API_ID, API_HASH, BOT_USERNAME
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# Get config from environment variables or fallback to config file
+BOT_TOKEN = os.getenv("BOT_TOKEN", "8059528086:AAFIZLlNJzo_nUplHlXzjyShla-DsT0RNYw")
+API_ID = int(os.getenv("API_ID", "29784596"))
+API_HASH = os.getenv("API_HASH", "4f330d47c4fa2a9732caa0036942c5a9")
+BOT_USERNAME = os.getenv("BOT_USERNAME", "Facemedobookbot")
 
 # Initialize bot
 bot = Client(
