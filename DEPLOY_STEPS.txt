@@ -1,0 +1,37 @@
+🚀 خطوات النشر البسيطة:
+
+1. اذهب إلى: https://railway.app
+
+2. اضغط: Start a New Project
+
+3. اختر: Deploy from GitHub repo
+
+4. اكتب: cursor-ai/cursor
+
+5. اختر الفرع: cursor/combine-token-and-id-for-bot-765d
+
+6. اضغط: Deploy Now
+
+7. انتظر دقيقة
+
+8. اذهب إلى Variables tab
+
+9. أضف هذه المتغيرات:
+
+BOT_TOKEN=8059528086:AAFIZLlNJzo_nUplHlXzjyShla-DsT0RNYw
+API_ID=29784596
+API_HASH=4f330d47c4fa2a9732caa0036942c5a9
+BOT_USERNAME=Facemedobookbot
+ADMIN_ID=5509130673
+
+10. اضغط Deploy
+
+11. افتح Telegram
+
+12. ابحث عن: @Facemedobookbot
+
+13. أرسل: /start
+
+✅ تم! البوت يعمل!
+
+🎯 البوت الأصلي القوي جاهز!

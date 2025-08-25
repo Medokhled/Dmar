@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "original_bot.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "original_bot.py"
+    }
+  ],
+  "env": {
+    "BOT_TOKEN": "8059528086:AAFIZLlNJzo_nUplHlXzjyShla-DsT0RNYw",
+    "API_ID": "29784596",
+    "API_HASH": "4f330d47c4fa2a9732caa0036942c5a9",
+    "BOT_USERNAME": "Facemedobookbot",
+    "ADMIN_ID": "5509130673"
+  }
+}
